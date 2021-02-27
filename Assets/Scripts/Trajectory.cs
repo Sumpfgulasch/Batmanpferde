@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Trajectory
 {
 	public Vector3 startPoint;
@@ -15,7 +16,6 @@ public class Trajectory
 
 	public Trajectory(Vector3 startPoint, Vector2 direction, float distance, float height, AnimationCurve HeightCurve, int iterations)
 	{
-		// override stuff for testing 
 
 
 		// save values in the object
@@ -105,6 +105,11 @@ public class Trajectory
 		}
 
 		return 0;
+	}
+
+	public void UpdateLines()
+	{
 
 	}
+
 }
