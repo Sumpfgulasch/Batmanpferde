@@ -20,12 +20,17 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Keyboard.current.aKey.isPressed)
+        {
+            print("a is pressed");
+        }
+        //if (Keyboard.)
+        //print("k value: " + Keyboard.current.kKey.ReadValue());
     }
 
 	public void HitBall(float force, Vector2 hitDirection)
 	{
-
+        
 	}
 
 
@@ -53,8 +58,13 @@ public class Player : MonoBehaviour
 
     public void OnHit(InputAction.CallbackContext context)
     {
-        
+
     }
+
+    //public void OnMove()
+    //{
+    //    print("on move broadcast");
+    //}
 
 
 }
