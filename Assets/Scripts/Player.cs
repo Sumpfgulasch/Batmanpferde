@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
 	public Collider BallHitZone;
+    public float moveSpeed = 2f;
+
+
+    private Rigidbody rb;
 	
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = this.GetComponentInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -22,6 +27,34 @@ public class Player : MonoBehaviour
 	{
 
 	}
+
+
+
+    // -------------------------------- Events --------------------------------
+
+
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            var value = context.ReadValue<Vector2>();
+            var velocity = new Vector3(value.x, 0, value.y);
+
+            rb.velocity = velocity * moveSpeed;
+
+            print("move");
+        }
+        else if (context.canceled)
+        {
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+    public void OnHit(InputAction.CallbackContext context)
+    {
+        
+    }
 
 
 }
