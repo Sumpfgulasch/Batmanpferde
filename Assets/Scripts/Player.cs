@@ -5,28 +5,33 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    //public static Player inst;
+
 	public Collider BallHitZone;
     public float moveSpeed = 2f;
+    [HideInInspector] public Vector2 moveInput;
+    
 
+    [HideInInspector] public float holdPunchTime;
 
     private Rigidbody rb;
+    private Coroutine holdPunchRoutine; 
 	
-    // Start is called before the first frame update
+    
     void Start()
     {
+        moveInput = new Vector2();
         rb = this.GetComponentInChildren<Rigidbody>();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        if (Keyboard.current.aKey.isPressed)
-        {
-            print("a is pressed");
-        }
-        //if (Keyboard.)
-        //print("k value: " + Keyboard.current.kKey.ReadValue());
+        //rb.velocity = new Vector3(moveInput.x, 0, moveInput.y) * moveSpeed;
     }
+
+
+
 
 	public void HitBall(float force, Vector2 hitDirection)
 	{
@@ -35,36 +40,7 @@ public class Player : MonoBehaviour
 
 
 
-    // -------------------------------- Events --------------------------------
-
-
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            var value = context.ReadValue<Vector2>();
-            var velocity = new Vector3(value.x, 0, value.y);
-
-            rb.velocity = velocity * moveSpeed;
-
-            print("move");
-        }
-        else if (context.canceled)
-        {
-            rb.velocity = Vector3.zero;
-        }
-    }
-
-    public void OnHit(InputAction.CallbackContext context)
-    {
-
-    }
-
-    //public void OnMove()
-    //{
-    //    print("on move broadcast");
-    //}
+    
 
 
 }

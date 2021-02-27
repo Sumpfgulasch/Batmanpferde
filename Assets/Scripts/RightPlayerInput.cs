@@ -6,21 +6,26 @@ using UnityEngine.InputSystem;
 public class RightPlayerInput : MonoBehaviour
 {
     [HideInInspector] public Vector2 moveInput;
-    [HideInInspector] public bool fickDich;
-    [HideInInspector] public float fickDichPressTime;
+    [HideInInspector] public bool enterKey;
+    [HideInInspector] public float enterKeyPressTime;
+
+    public float moveSpeed = 2f;
+
+    Rigidbody rb;
+    private Coroutine holdPunchRoutine;
+    private float holdPunchTime;
+
     void Start()
     {
         moveInput = new Vector2();
+        rb = this.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     public void GetInput()
     {
+        // Move
         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
         {
             moveInput.y = 1;
@@ -57,29 +62,34 @@ public class RightPlayerInput : MonoBehaviour
             moveInput.y = 0;
         }
 
+        rb.velocity = moveInput;
 
+        // Enter
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
-            fickDich = true;
+            enterKey = true;
+            enterKeyPressTime = 0;
+            StartCoroutine(EnterPressTime());
         }
         if (Keyboard.current.enterKey.wasReleasedThisFrame)
         {
-            fickDich = false;
-            fickDichPressTime = 0;
+            enterKey = false;
+            enterKeyPressTime = 0;
+            StopCoroutine(EnterPressTime());
         }
 
         
     }
 
 
-    private IEnumerator FickDichPressTime()
+    private IEnumerator EnterPressTime()
     {
         float timer = 0;
 
         while (true)
         {
             timer += Time.deltaTime;
-            fickDichPressTime = timer;
+            enterKeyPressTime = timer;
 
             yield return null;
         }
