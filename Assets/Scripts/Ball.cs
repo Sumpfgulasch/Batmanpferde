@@ -31,7 +31,23 @@ public class Ball : MonoBehaviour
 
 	// events
 
-	System.Action OnBallTouchedGround;
+	System.Action<Player> OnBallTouchedGround;
+	System.Action<Player> OnPlayerHitBall;
+
+	public Player currentBallOwner; 
+
+	public void Awake()
+	{
+		// wire events
+
+		OnBallTouchedGround += (Player ballOwner) =>
+		{
+			MoveBallToPosition(ballOwner.otherPlayer.transform.position + new Vector3(0f, 0.5f, 0f));
+			followTarget = false;
+			targetPointIndex = 0;
+		};
+	}
+
 
 	public void Update()
 	{
@@ -87,6 +103,11 @@ public class Ball : MonoBehaviour
 				if (destroyTrajectory)
 				{
 					trajectory.points.Remove(targetPoint);
+					
+					if(trajectory.points.Count == 0)
+					{
+						OnBallTouchedGround.Invoke(currentBallOwner);
+					}
 				}
 
 				// if we arenot destroying the trajectory just increase the index
@@ -96,6 +117,21 @@ public class Ball : MonoBehaviour
 				}
 			}
 
+		}
+	}
+
+	public void MoveBallToPosition(Vector3 position)
+	{
+		this.transform.position = position;
+	}
+
+
+	private void OnTriggerEnter(Collider other)
+	{
+		PlayerArea playerArea = other.gameObject.GetComponent<PlayerArea>();
+		if (playerArea != null)
+		{
+			currentBallOwner = playerArea.owner;
 		}
 	}
 }

@@ -5,6 +5,25 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+	public Player otherPlayer
+	{
+		get
+		{
+			// this is retarded
+			Player[] players = FindObjectsOfType<Player>();
+
+			for (int i = 0; i < players.Length; i++)
+			{
+				if (players[i] != this)
+				{
+					return players[i];
+				}
+			}
+			
+			return null;
+
+		}
+	}
 	public Collider BallHitZone;
     public float moveSpeed = 2f;
 

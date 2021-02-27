@@ -16,8 +16,6 @@ public class Trajectory
 
 	public Trajectory(Vector3 startPoint, Vector2 direction, float distance, float height, AnimationCurve HeightCurve, int iterations)
 	{
-
-
 		// save values in the object
 		this.startPoint = startPoint;
 		this.direction = direction.normalized;
