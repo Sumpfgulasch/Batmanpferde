@@ -2385,6 +2385,10 @@ PrefabInstance:
       propertyPath: m_NeverAutoSwitchControlSchemes
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1532777285762696926, guid: 9573da342e38ebe47a1eeede6f20b783, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnPunch
+      objectReference: {fileID: 0}
     - target: {fileID: 1532777285762696992, guid: 9573da342e38ebe47a1eeede6f20b783, type: 3}
       propertyPath: m_Name
       value: Player_left
