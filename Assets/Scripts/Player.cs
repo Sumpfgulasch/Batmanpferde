@@ -5,8 +5,24 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    //public static Player inst;
+	//public static Player inst;
+	public Player otherPlayer
+	{
+		get
+		{
+			Player[] players = FindObjectsOfType<Player>();
+			for (int i = 0; i < players.Length; i++)
+			{
+				if (players[i] != this)
+				{
+					return players[i];
+				}
+			}
 
+			return null;
+		}
+
+	}
 	public Collider BallHitZone;
     public float moveSpeed = 2f;
     [HideInInspector] public Vector2 moveInput;
