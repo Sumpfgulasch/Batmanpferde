@@ -11,7 +11,7 @@ public class Ball : MonoBehaviour
 	public AnimationCurve heightToTime;
 	public float maxHeight;
 
-	public AnimationCurve speedToTime;
+
 	public AnimationCurve distanceToForce;
 
 	public LineRenderer lineRenderer;
@@ -20,6 +20,26 @@ public class Ball : MonoBehaviour
 	public Vector2 direction;
 	public float distance;
 
+	[Header("Following The Trajectory")]
+	public Trajectory curTrajectory;
+	Vector3 targetPoint;
+	bool followTarget;
+	float accuracy = 0.1f;
+	public AnimationCurve speedToHeight;
+	public int targetPointIndex = 0;
+	public float maxSpeed = 1;
+
+	// events
+
+	System.Action OnBallTouchedGround;
+
+	public void Update()
+	{
+		if (followTarget)
+		{
+			FollowTrajectory(curTrajectory, true);
+		}
+	}
 	public bool isHittableBy(Player player)
 	{
 		return false;
@@ -30,21 +50,52 @@ public class Ball : MonoBehaviour
 
 	//}
 
-	public  void InitiateMove(Trajectory trajectory)
+	[Button]
+	public void InitiateMovementOnCurrentTrajectory()
 	{
-
+		targetPointIndex = 0;
+		followTarget = true;
 	}
 
 	[Button]
-	public void CalculateTrjectory() 
+	public void CalculateNewTrjectory()
 	{
-		Trajectory newTrajectory = new Trajectory(this.transform.position, direction, distance, maxHeight, heightToTime, 50);
+		Trajectory newTrajectory = new Trajectory(this.transform.position, direction, distance, maxHeight, heightToTime, 100);
 		newTrajectory.PutIntoLineRenderer(lineRenderer);
-
+		curTrajectory = newTrajectory;
 	}
 
 
 
+	public void FollowTrajectory(Trajectory trajectory, bool destroyTrajectory = true)
+	{
+		Debug.Log("Ball fallows rajectory");
+		if (curTrajectory.points.Count > 0)
+		{
+			targetPoint = curTrajectory.points[targetPointIndex];
 
+			// getCurrentSpeedRelativeToHeight 
+			float curSpeed = speedToHeight.Evaluate(transform.position.y / maxHeight) * Time.deltaTime;
+			Debug.Log("Ball fallows rajectory. Cur Speed" + curSpeed);
 
+			transform.position = Vector3.MoveTowards(this.transform.position, targetPoint, curSpeed);
+
+			if (Vector3.Distance(transform.position, targetPoint) < accuracy)
+			{
+				// if we are destroying the trajectory, remove the firsat point from its list
+				// the trget index remains 0, because its the next point that has the index 1 now
+				if (destroyTrajectory)
+				{
+					trajectory.points.Remove(targetPoint);
+				}
+
+				// if we arenot destroying the trajectory just increase the index
+				else
+				{
+					targetPointIndex++;
+				}
+			}
+
+		}
+	}
 }
