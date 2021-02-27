@@ -75,7 +75,7 @@ public class Ball : MonoBehaviour
 			targetPoint = curTrajectory.points[targetPointIndex];
 
 			// getCurrentSpeedRelativeToHeight 
-			float curSpeed = speedToHeight.Evaluate(transform.position.y / maxHeight) * Time.deltaTime;
+			float curSpeed = speedToHeight.Evaluate(transform.position.y / maxHeight) * Time.deltaTime * maxSpeed;
 			Debug.Log("Ball fallows rajectory. Cur Speed" + curSpeed);
 
 			transform.position = Vector3.MoveTowards(this.transform.position, targetPoint, curSpeed);
